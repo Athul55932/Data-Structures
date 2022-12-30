@@ -1,0 +1,45 @@
+#include<stdio.h>
+ int partition(int a[],int p,int r)
+{
+    int t,q,i;
+    t= a[p];
+    q=p;
+    for(i=p+1;i<=r;i++)
+    
+        if(a[i]<t)
+        {
+            a[q++]=a[i];
+            a[i]=a[q];
+        }
+        a[q]=t;
+        return q;
+    
+}
+void qs(int a[],int p, int r)
+{   int q;
+    if(p<r)
+    {
+        q=partition(a,p,r);
+        qs(a,p,q-1);
+        qs(a,q+1,r);
+    }
+}
+void main()
+{
+    int p,n,i;
+    printf("Enter the size of the array: ");
+    scanf("%d",&n);
+    int arr[n];
+    printf("Enter the array elements: ");
+    for(i=0;i<n;i++)
+    {
+        scanf("%d",&arr[i]);
+    }
+    qs(arr,0,n-1);
+    printf("The sorted array is:");
+     for(i=0;i<n;i++)
+    {
+        printf("\n %d",arr[i]);
+    }
+    
+}
