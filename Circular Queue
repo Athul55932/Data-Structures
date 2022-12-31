@@ -1,0 +1,112 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct Queue
+{
+    int head;
+    int tail;
+    int size;
+    int a[51];
+}Queue;
+
+void create_Q(Queue *q, int x)
+{
+    q->head =  q->tail = 0;
+    q->size = x;
+}
+
+int isFull(Queue *q)
+{
+    if (q->tail % q->size == (q->head)-1)
+        return 1;
+    return -1;
+}
+
+int  isEmpty(Queue *q)
+{
+    if(q->head == 0)
+        return 1;
+    return -1;
+}
+
+void enQ(Queue *q,int x)
+{
+    
+        q->tail = (q->tail % q->size)+1;
+        q->a[q->tail]=x;
+    
+    if (q->head == 0)
+        q->head = 1;
+}
+
+ int deQ(Queue *q)
+{
+    if (q->head !=0)
+    {
+        printf("Dequeued %d\n",q->a[q->head]);
+        if (q->head!=q->tail)
+            q->head = (q->head % q->size) + 1;
+        else
+            q->head = q->tail = 0;
+            return 1;
+    }
+    return -1;
+}
+
+void listQ(Queue *q)
+{
+    int x;
+    for(x = q->head;  ; x++)
+    {
+        if(x==0)
+            x++;
+        printf("%d\n",q->a[x]);
+        if (x==q->tail)
+            break;
+        x = x % q->size;
+    }
+}
+
+void main()
+{
+    int c=0,x,n,r;
+    Queue q;
+    printf("Enter the Queue size : ");
+    scanf("%d",&n);
+    create_Q(&q,n);
+    while(c!=4)
+    {
+        printf("\n1.Enqueue\n2.Dequeue\n3.ListQueue\n4.Exit\n");
+        scanf("%d",&c);
+        switch (c)
+        {
+        case 1: 
+                if(isFull(&q)==-1)
+                {   printf("Enter the data"); 
+                    scanf("%d",&x);
+                    enQ(&q,x);
+                    printf("Enqueue successfull");
+                }
+                else
+                    printf("Queue is full");
+                break;
+        case 2:
+                r=deQ(&q);
+                if(r=-1)
+                    printf("Queue is empty");
+                break;    
+        case 3:
+                if(isEmpty(&q)==-1)
+                    listQ(&q);
+                else
+                    printf("EMPTY");
+                break;
+        case 4:
+                break;
+
+        default:
+                printf("Entered option is wrong");
+            }
+    }        
+
+}
