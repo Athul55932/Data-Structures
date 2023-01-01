@@ -1,0 +1,148 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node 
+{
+  int data;
+  struct Node* next;
+};
+
+void insertFirst(struct Node** head, int data) 
+{
+  struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+  newNode->data = data;
+  newNode->next = *head;
+  *head = newNode;
+}
+void insertIntermediate(struct Node* head, int data, int position) 
+{
+  struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+  newNode->data = data;
+  struct Node* current = head;
+  for (int i = 1; i < position-1 && current != NULL; i++) 
+     current = current->next;
+  if (current == NULL) 
+  {
+    printf("Invalid position\n");
+    free(newNode);
+    return;
+  }
+  newNode->next = current->next;
+  current->next = newNode;
+}
+void insertLast(struct Node* head, int data) 
+{
+  struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+  newNode->data = data;
+  newNode->next = NULL;
+  struct Node* current = head;
+  while (current->next != NULL) 
+     current = current->next;
+  current->next = newNode;
+}
+
+// Function to delete a node with the specified data from the linked list
+void deleteNode(struct Node** head, int data) 
+{  struct Node* current = *head;
+  if (current != NULL && current->data == data) 
+  {
+    *head = current->next;
+    free(current);
+    return;
+  }
+  struct Node* previous;
+  while (current != NULL && current->data != data) 
+  {
+    previous = current;
+    current = current->next;
+  }
+  if (current == NULL) 
+  {
+    printf("Data not found\n");
+    return;
+  }
+  previous->next = current->next;
+  free(current);
+}
+void searchNode(struct Node* head, int data) 
+{  struct Node* current = head;
+  int pos = 1;
+  while (current != NULL && current->data != data) 
+  {
+    current = current->next;
+    pos++;
+  }
+  if (current != NULL) 
+  {
+    printf("Data found at position %d\n", pos);
+  } else {
+    printf("Data not found\n");
+  }
+}
+void printList(struct Node* head) 
+{
+  printf("Linked list: ");
+  struct Node* current = head;
+  while (current != NULL) 
+  {
+    printf("%d ", current->data);
+    current = current->next;
+  }
+  printf("\n");
+}
+
+int main() 
+{
+  struct Node* head = NULL;
+  int choice;
+  int data, position;
+  do 
+  {
+    printf("\n-----Menu-----\n");
+    printf("1. Insert a new element as the first node\n");
+    printf("2. Insert a new element as an intermediate node\n");
+    printf("3. Insert a new element as the last node\n");
+    printf("4. Delete a node with a user-inputted element\n");
+    printf("5. Search for a node with a user-inputted element\n");
+    printf("6. Exit\n");
+    printf("\nEnter your choice:\n");
+    scanf("%d", &choice);
+    switch (choice) 
+    {
+      case 1:
+        printf("Enter the data for the new element: ");
+        scanf("%d", &data);
+        insertFirst(&head, data);
+        break;
+      case 2:
+        printf("Enter the data for the new element: ");
+        scanf("%d", &data);
+        printf("Enter the position for the new element (1-based index): ");
+        scanf("%d", &position);
+        insertIntermediate(head, data, position);
+        break;
+      case 3:
+        printf("Enter the data for the new element: ");
+        scanf("%d", &data);
+        insertLast(head, data);
+        break;
+      case 4:
+        printf("Enter the data of the element to delete: ");
+        scanf("%d", &data);
+        deleteNode(&head, data);
+        break;
+      case 5:
+        printf("Enter the data of the element to search for: ");
+        scanf("%d", &data);
+        searchNode(head, data);
+        break;
+      case 6:
+        break;
+      default:
+        printf("Invalid choice\n");
+        break;
+    }
+    printList(head);
+  } 
+  while (choice !=6);
+}
